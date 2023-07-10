@@ -121,6 +121,48 @@ cd speedy-config
 
 #### Stage 4: Install to emmc
 
+Paritioning the emmc requires leaving gaps at the beginning and end 
+
+```
+gdisk /dev/mmcblk0
+
+o
+n
+y
+1
++16M
++32M
+7f00
+x
+a
+48
+56
+<press enter>
+m
+n
+2
+<press enter for default value>
++12928M
+<press enter for default value>
+n
+3
+<press enter for default value>
++2G
+8200
+w
+y
+
+```
+
+```
+dd if=/boot/pack/vmlinux.kpart of=/dev/mmcblk0p1
+mkfs.ext4 /dev/mmcblk0p2
+mkswap /dev/mmvblk0p3
+swapoff /dev/sda3
+swapon /dev/mmcblk0p3
+mount /dev/mmcblk0p2 /mnt
+```
+
 TODO
 
 
