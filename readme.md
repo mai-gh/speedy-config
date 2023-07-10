@@ -39,6 +39,11 @@ gpg --verify "wpa_supplicant-2:2.10-8-armv7h.pkg.tar.xz.sig"
 wget -c http://tardis.tiny-vps.com/aarm/repos/2023/03/02/armv7h/community/pcsclite-1.9.9-2-armv7h.pkg.tar.xz
 wget -c http://tardis.tiny-vps.com/aarm/repos/2023/03/02/armv7h/community/pcsclite-1.9.9-2-armv7h.pkg.tar.xz.sig
 gpg --verify pcsclite-1.9.9-2-armv7h.pkg.tar.xz.sig
+wget -c http://tardis.tiny-vps.com/aarm/repos/2023/03/02/armv7h/alarm/firmware-veyron-1.0-1-armv7h.pkg.tar.xz
+wget -c http://tardis.tiny-vps.com/aarm/repos/2023/03/02/armv7h/alarm/firmware-veyron-1.0-1-armv7h.pkg.tar.xz.sig
+gpg --verify firmware-veyron-1.0-1-armv7h.pkg.tar.xz.sig
+
+
 cd ..
 
 # at the time of writing, alarm sources are not available, so we will use parabola's sources
@@ -75,11 +80,8 @@ git -C abslibre checkout ca9c36b98d498963476c0732d54c219fa4ce85cc
 ./partition_vboot.sh /dev/sdX
 mount /dev/sdX2 /mnt/usb
 bsdtar -xf alarm_20230302/ArchLinuxARM-armv7-latest.tar.gz -C /mnt/usb
-tar -xvzf blobs_backup/wifi.tgz -C /mnt/usb
 rm /mnt/usb/lib/firmware/brcm/brcmfmac4354-sdio.clm_blob
-cp "alarm_20230302/dialog-1:1.3_20230209-1-armv7h.pkg.tar.xz" /mnt/usb/root/
-cp "alarm_20230302/wpa_supplicant-2:2.10-8-armv7h.pkg.tar.xz" /mnt/usb/root/
-cp "alarm_20230302/pcsclite-1.9.9-2-armv7h.pkg.tar.xz" /mnt/usb/root/
+cp -r alarm_20230302 /mnt/usb/root/
 mkdir /mnt/usb/boot/pack
 cp abslibre/libre/linux-libre/kernel.keyblock /mnt/usb/boot/pack/
 cp abslibre/libre/linux-libre/kernel_data_key.vbprivk /mnt/usb/boot/pack/
@@ -101,7 +103,7 @@ umount /mnt/usb
  - now boot the drive on the c201, when it boots to the libreboot screen press ctrl + u to boot from the usb
  - login as root
 ```
-pacman -U *.pkg.tar.xz
+pacman -U alarm_20230302/*.pkg.tar.xz
 wifi-menu
 pacman-key --init
 pacman -Sy archlinux-keyring archlinuxarm-keyring
