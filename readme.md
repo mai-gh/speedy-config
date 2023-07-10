@@ -112,8 +112,11 @@ pacman -U /var/cache/pacman/*keyring*
 pacman -Sy archlinux-keyring archlinuxarm-keyring
 pacman -Sy archlinux-keyring archlinuxarm-keyring
 
-pacman -S arch-install-scripts vboot-utils uboot-tools gptfdisk vim mc
+pacman -S arch-install-scripts vboot-utils uboot-tools gptfdisk vim mc git
+
 git clone https://github.com/mai-gh/speedy-config 
+cd speedy-config
+./clone_abslibre.sh
 ```
 
 #### Stage 4: Install to emmc
