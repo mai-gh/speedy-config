@@ -123,7 +123,7 @@ cd speedy-config
 
 #### Stage 4: Install to emmc
 
-Paritioning the emmc requires leaving gaps at the beginning and end 
+Paritioning the emmc requires leaving gaps at the beginning and end of mmcblk0
 
 ```
 gdisk /dev/mmcblk0
@@ -163,6 +163,29 @@ mkswap /dev/mmvblk0p3
 swapoff /dev/sda3
 swapon /dev/mmcblk0p3
 mount /dev/mmcblk0p2 /mnt
+pacstrap /mnt base linux-armv7 vboot-utils uboot-tools dtc firmware-veyron neovim screen mc sway foot bemenu terminus-font networkmanager
+genfstab -U /mnt >> /mnt/etc/fstab
+cp -r /boot/pack /mnt/boot/
+arch-chroot /mnt
+ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+hwclock --systohc
+ln -sv /usr/bin/nvim /usr/bin/vim
+vim /etc/locale.gen
+echo 'LANG=en_US.UTF-8' > locale.conf
+echo 'en_US.UTF-8 UTF-8' >> locale.gen
+locale-gen
+echo 'c201' > /etc/hostname
+mkinitcpio -P
+passwd
+useradd -m -g users -s /bin/bash mai
+passwd mai
+cd /boot/pack
+rm vmlinx.kpart
+vboot-utils uboot-tools 
+./pack_vboot.sh
+exit
+umount /mnt
+poweroff
 ```
 
 TODO
